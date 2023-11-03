@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from "react";
 import Splash from "./components/Splash";
-import useQueryParams from "./hooks/useQueryParams";
+import FlipCard from "./components/common/FlipCard";
 
 const App = ({ mode }: { mode: "splash" | "content" }) => {
   return (
-    <div className="text-ohi-text-contrast text-3xl h-[100dvh] w-full">
-      <div className="fixed w-3/4 -translate-x-1/2 -translate-y-1/2 h-2/3 top-1/2 left-1/2">
-        <Splash />
+    <div className="text-ohi-text-contrast text-3xl h-[100dvh] w-full min-w-[556px] min-h-[520px] overflow-hidden">
+      <div
+        className={`w-full h-full ${
+          mode === "splash" ? "scale-[.6]" : "scale-100"
+        }  transition-transform duration-1000`}
+      >
+        <FlipCard
+          frontElem={<Splash />}
+          backElem={<div className="w-full h-full bg-black" />}
+          isBack={mode === "content"}
+        />
       </div>
-      {mode === "content" && <div>content here!!</div>}
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Picture from "./common/Picture";
 import Loader from "./common/Loader";
 import { useNavigate } from "react-router-dom";
@@ -6,30 +6,62 @@ import { useNavigate } from "react-router-dom";
 type Props = {};
 
 const Splash = (props: Props) => {
+  const [loading, setLoading] = useState<number>(0);
   const navigate = useNavigate();
 
   const proceedToMain = () => {
     navigate("/main");
   };
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setLoading((prev) => {
+        if (prev + 10 >= 100) {
+          clearInterval(interval);
+          return 100;
+        } else {
+          return prev + 10;
+        }
+      });
+    }, 300);
+
+    return () => {
+      clearInterval(interval);
+    };
+  }, []);
+
+  const LoaderSize = useMemo(() => 220, []);
+
   return (
-    <div className="relative flex flex-col w-full h-full overflow-hidden rounded">
+    <div className="relative flex flex-col w-full h-full overflow-hidden rounded shadow-[4px_4px_30px_5px_rgba(0,0,0,0.50)] pt-12 px-12 pb-6">
       <Picture
         src="/images/splash/bg"
         aria-disabled
-        className="absolute object-cover w-full h-full -z-10"
+        className="absolute top-0 left-0 object-cover w-full h-full -z-10"
       />
-      <section className="flex flex-col items-center justify-center h-full p-4">
-        <h1 className="text-ohi-text-normal font-playfairsc text-[48px] tracking-[0.5px] mb-12">
+      <section className="flex flex-col items-center h-full gap-8">
+        <h1
+          className="flex items-center font-playfairsc text-ohi-text-normal text-[60px] leading-tight lg:text-[80px] tracking-[0.5px]"
+          style={{ height: `calc(55% - ${LoaderSize / 2}px)` }}
+        >
           You’re Invited
         </h1>
-        <Loader progress={100} onEnter={proceedToMain} />
+        <div className="h-[200px]" style={{ height: LoaderSize }}>
+          <Loader
+            progress={loading}
+            onEnter={proceedToMain}
+            size={LoaderSize}
+          />
+        </div>
+        <aside
+          className="flex items-end uppercase text-ohi-text-normal text-center text-xl lg:text-2xl tracking-[0.2px]"
+          style={{ height: `calc(45% - ${LoaderSize / 2}px)` }}
+        >
+          Sesame Salt
+          <br />
+          October 30th, 2023
+        </aside>
       </section>
-      <aside className="uppercase text-ohi-text-normal text-center text-base tracking-[0.2px] mb-10">
-        Sesame Salt
-        <br />
-        October 30th, 2023
-      </aside>
     </div>
   );
 };

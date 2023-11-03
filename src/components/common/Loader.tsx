@@ -1,8 +1,8 @@
 import React, { useMemo } from "react";
 
-type Props = { progress?: number; onEnter?: () => void };
+type Props = { progress?: number; onEnter?: () => void; size?: number };
 
-const Loader = ({ progress = 0, onEnter }: Props) => {
+const Loader = ({ progress = 0, onEnter, size = 200 }: Props) => {
   const strokeDashArray = useMemo(() => 2 * Math.PI * 34.5, []);
 
   const strokeDashOffset = useMemo(
@@ -23,8 +23,7 @@ const Loader = ({ progress = 0, onEnter }: Props) => {
       <svg
         viewBox="0 0 80 80"
         xmlns="http://www.w3.org/2000/svg"
-        width={140}
-        height={140}
+        style={{ width: size, height: size }}
         fill="none"
         className="-rotate-90"
       >
@@ -37,14 +36,13 @@ const Loader = ({ progress = 0, onEnter }: Props) => {
           strokeWidth={5}
           strokeDasharray={strokeDashArray}
           strokeDashoffset={strokeDashOffset}
-          className="transition-all"
+          className="transition-all ease-linear"
         />
       </svg>
 
       <svg
         xmlns="http://www.w3.org/2000/svg"
-        width={140}
-        height={140}
+        style={{ width: size, height: size }}
         viewBox="0 0 80 80"
         fill="none"
         className={`absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 ${
@@ -96,14 +94,14 @@ const Loader = ({ progress = 0, onEnter }: Props) => {
       </svg>
 
       <div
-        className={`absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 font-playfair text-lg tracking-[-0.12px] ${
+        className={`absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 font-playfair text-2xl lg:text-[28px] tracking-[-0.12px] ${
           progress < 100 ? "opacity-100" : "opacity-0 duration-300 delay-300"
         } transition-opacity`}
       >
         <div className={`${progress < 100 && "animate-pulse"}`}>Loading</div>
       </div>
       <div
-        className={`absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 font-playfair text-lg tracking-[-0.12px] ${
+        className={`absolute -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 font-playfair text-2xl lg:text-[28px] tracking-[-0.12px] ${
           progress < 100
             ? "opacity-0"
             : "opacity-100 duration-300 delay-[600ms]"
