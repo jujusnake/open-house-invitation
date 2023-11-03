@@ -13,7 +13,7 @@ const FlipCard = ({ frontElem, backElem, isBack = false }: FlipCardProps) => {
       style={{ perspective: 2000 }}
     >
       <div
-        className="relative w-full h-full transition-transform duration-[1.5s] flip-card-inner"
+        className="relative w-full h-full transition-transform duration-[1.5s] flip-card-inner ease-out"
         style={{
           transformStyle: "preserve-3d",
           MozTransformStyle: "preserve-3d",

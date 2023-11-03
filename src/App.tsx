@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Splash from "./components/Splash";
 import FlipCard from "./components/common/FlipCard";
+import ThreeCanvas from "./components/ThreeCanvas";
 
 const App = ({ mode }: { mode: "splash" | "content" }) => {
   return (
@@ -8,11 +9,11 @@ const App = ({ mode }: { mode: "splash" | "content" }) => {
       <div
         className={`w-full h-full ${
           mode === "splash" ? "scale-[.6]" : "scale-100"
-        }  transition-transform duration-1000`}
+        }  transition-transform duration-[1.9s] ease-out`}
       >
         <FlipCard
           frontElem={<Splash />}
-          backElem={<div className="w-full h-full bg-black" />}
+          backElem={<ThreeCanvas mode={mode} />}
           isBack={mode === "content"}
         />
       </div>
