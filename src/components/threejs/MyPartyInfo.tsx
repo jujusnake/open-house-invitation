@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Float, Mask, useGLTF, useMask } from "@react-three/drei";
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { TextureLoader } from "three";
@@ -26,35 +26,20 @@ const MyPartyInfo = ({ selected, onSelect }: Props) => {
     if (modelRef.current) {
       const mesh = modelRef.current.children[0].children[0] as THREE.Mesh;
       const material = mesh.material as THREE.MeshStandardMaterial;
-      const dampedOpacity = THREE.MathUtils.damp(
-        material.opacity,
-        selected ? 0 : 1,
-        3.5,
-        delta
-      );
+      const dampedOpacity = THREE.MathUtils.damp(material.opacity, selected ? 0 : 1, 3.5, delta);
       material.opacity = dampedOpacity;
     }
 
     if (photoRef.current) {
       const material = photoRef.current.material as THREE.MeshStandardMaterial;
-      const dampedOpacity = THREE.MathUtils.damp(
-        material.opacity,
-        selected ? 0 : 1,
-        3.5,
-        delta
-      );
+      const dampedOpacity = THREE.MathUtils.damp(material.opacity, selected ? 0 : 1, 3.5, delta);
       material.opacity = dampedOpacity;
     }
   });
 
   return (
     <>
-      <mesh
-        scale={15}
-        position={[0, 6.5, -25]}
-        ref={modelRef}
-        onClick={() => selected === false && onSelect()}
-      >
+      <mesh scale={15} position={[0, 6.5, -25]} ref={modelRef} onClick={() => selected === false && onSelect()}>
         <primitive object={scene} />
       </mesh>
       <mesh
@@ -69,18 +54,19 @@ const MyPartyInfo = ({ selected, onSelect }: Props) => {
         <meshBasicMaterial map={image} transparent />
       </mesh>
 
-      <PortalBox />
+      <PortalBox selected={selected} />
     </>
   );
 };
 
 export default MyPartyInfo;
 
-const PortalBox = () => {
+const PortalBox = ({ selected }: { selected: boolean }) => {
   const { scene } = useThree();
   const stencil = useMask(100, false);
   const { scene: champagne } = useGLTF("/models/champagne.glb");
-  const image = useLoader(TextureLoader, "/images/frame/main.jpg");
+  const image = useLoader(TextureLoader, ["/images/frame/main.jpg", "/images/frame/main2.jpg", "/images/frame/main3.jpg"]);
+  const [imageIdx, setImageIdx] = useState<number>(0);
 
   const champagneRef = useRef<any | null>(null);
   const spotRef = useRef<THREE.SpotLight>(new THREE.SpotLight());
@@ -110,6 +96,22 @@ const PortalBox = () => {
     }
   }, [stencil]);
 
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImageIdx((prev) => {
+        if (prev > 1) {
+          return 0;
+        } else {
+          return prev + 1;
+        }
+      });
+    }, 3000);
+    return () => {
+      clearInterval(interval);
+      setImageIdx(0);
+    };
+  }, [selected]);
+
   return (
     <>
       <Mask id={100} position={[0, 6.5, -24]}>
@@ -129,19 +131,10 @@ const PortalBox = () => {
       <Float floatIntensity={0.5} rotationIntensity={0.01} speed={7}>
         <mesh position={[0, 6, -30]}>
           <planeGeometry args={[7 * 1.5, 7]} />
-          <meshBasicMaterial map={image} transparent {...stencil} />
+          <meshBasicMaterial map={image[imageIdx]} transparent {...stencil} />
         </mesh>
       </Float>
-      <spotLight
-        position={[0, 12, -26]}
-        intensity={100}
-        color={"#ffffff"}
-        ref={spotRef}
-        angle={Math.PI / 4}
-        distance={30}
-        penumbra={0.1}
-        castShadow
-      />
+      <spotLight position={[0, 12, -26]} intensity={100} color={"#ffffff"} ref={spotRef} angle={Math.PI / 4} distance={30} penumbra={0.1} castShadow />
     </>
   );
 };

@@ -40,44 +40,14 @@ const MyCamera = ({ target = "main" }: Props) => {
   }, []);
 
   useFrame(({ camera }, delta) => {
-    camera.position.x = THREE.MathUtils.damp(
-      camera.position.x,
-      CAMERA_POSITION[0] + mousePos[0],
-      4,
-      delta
-    );
+    camera.position.x = THREE.MathUtils.damp(camera.position.x, CAMERA_POSITION[0] + mousePos[0], 4, delta);
 
-    camera.position.y = THREE.MathUtils.damp(
-      camera.position.y,
-      CAMERA_POSITION[1] - mousePos[1],
-      4,
-      delta
-    );
-    camera.position.z = THREE.MathUtils.damp(
-      camera.position.z,
-      CAMERA_POSITION[2],
-      4,
-      delta
-    );
+    camera.position.y = THREE.MathUtils.damp(camera.position.y, CAMERA_POSITION[1] - mousePos[1], 4, delta);
+    camera.position.z = THREE.MathUtils.damp(camera.position.z, CAMERA_POSITION[2], 4, delta);
 
-    const newLookatX = THREE.MathUtils.damp(
-      prevLookatRef.current[0],
-      LOOKAT[0],
-      4,
-      delta
-    );
-    const newLookatY = THREE.MathUtils.damp(
-      prevLookatRef.current[1],
-      LOOKAT[1],
-      4,
-      delta
-    );
-    const newLookatZ = THREE.MathUtils.damp(
-      prevLookatRef.current[2],
-      LOOKAT[2],
-      4,
-      delta
-    );
+    const newLookatX = THREE.MathUtils.damp(prevLookatRef.current[0], LOOKAT[0], 4, delta);
+    const newLookatY = THREE.MathUtils.damp(prevLookatRef.current[1], LOOKAT[1], 4, delta);
+    const newLookatZ = THREE.MathUtils.damp(prevLookatRef.current[2], LOOKAT[2], 4, delta);
 
     // console.log(newLookatY);
     prevLookatRef.current = [newLookatX, newLookatY, newLookatZ];
