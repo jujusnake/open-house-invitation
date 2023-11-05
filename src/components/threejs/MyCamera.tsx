@@ -18,6 +18,8 @@ const MyCamera = ({ target = "main" }: Props) => {
         return [0, 4.5, -10];
       case "info":
         return [0, 6.5, -30];
+      case "about":
+        return [-12, 4.4, -18.5];
       default:
         return [0, 4.5, 0];
     }
@@ -29,6 +31,8 @@ const MyCamera = ({ target = "main" }: Props) => {
         return [0, 7, 17];
       case "info":
         return [0, 6.5, -19];
+      case "about":
+        return [-9.3677, 5.677, -13.16081797];
       default:
         return [0, 7, 17];
     }
@@ -49,7 +53,6 @@ const MyCamera = ({ target = "main" }: Props) => {
     const newLookatY = THREE.MathUtils.damp(prevLookatRef.current[1], LOOKAT[1], 4, delta);
     const newLookatZ = THREE.MathUtils.damp(prevLookatRef.current[2], LOOKAT[2], 4, delta);
 
-    // console.log(newLookatY);
     prevLookatRef.current = [newLookatX, newLookatY, newLookatZ];
     camera.lookAt(newLookatX, newLookatY, newLookatZ);
   });

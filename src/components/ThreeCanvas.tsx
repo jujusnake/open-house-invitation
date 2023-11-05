@@ -1,14 +1,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import {
-  CameraControls,
-  FlyControls,
-  KeyboardControlsEntry,
-  OrbitControls,
-  PerspectiveCamera,
-  useProgress,
-} from "@react-three/drei";
+import { CameraControls, FlyControls, KeyboardControlsEntry, OrbitControls, PerspectiveCamera, useProgress } from "@react-three/drei";
 import MyCamera from "./threejs/MyCamera";
 import MyDirecLight from "./threejs/MyDirecLight";
 import MyWall from "./threejs/MyWall";
@@ -25,10 +18,7 @@ type Props = {
 const ThreeCanvas = ({ mode, onProgress }: Props) => {
   return (
     <div className="w-full h-full bg-[#372e28]">
-      <Canvas
-        style={{ width: "100%", height: "100%" }}
-        resize={{ offsetSize: true }}
-      >
+      <Canvas style={{ width: "100%", height: "100%" }} resize={{ offsetSize: true }}>
         <CanvasChildren onProgress={onProgress} />
       </Canvas>
       <HTMLElements />
@@ -38,11 +28,7 @@ const ThreeCanvas = ({ mode, onProgress }: Props) => {
 
 export default ThreeCanvas;
 
-const CanvasChildren = ({
-  onProgress,
-}: {
-  onProgress?: (progress: number) => void;
-}) => {
+const CanvasChildren = ({ onProgress }: { onProgress?: (progress: number) => void }) => {
   const { progress } = useProgress();
 
   useEffect(() => {
@@ -52,9 +38,7 @@ const CanvasChildren = ({
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const [currentViewTarget, setCurrentViewTarget] = useState<
-    "main" | "info" | "about" | "rsvp"
-  >("main");
+  const [currentViewTarget, setCurrentViewTarget] = useState<"main" | "info" | "about" | "rsvp">("main");
 
   useEffect(() => {
     const page = searchParams.get("page");
@@ -80,7 +64,13 @@ const CanvasChildren = ({
           navigate("?page=info");
         }}
       />
-      <MyAboutUs />
+      <MyAboutUs
+        selected={currentViewTarget === "about"}
+        onSelect={() => {
+          setCurrentViewTarget("about");
+          navigate("?page=about");
+        }}
+      />
       <Helpers />
     </>
   );
@@ -123,7 +113,7 @@ const Helpers = () => {
         lookAt={() => new THREE.Vector3(0, 0, 0)}
         castShadow
       /> */}
-      {/* <OrbitControls zoomSpeed={10} position={[0, 0, 0]} /> */}
+      {/* <OrbitControls zoosmSpeed={10} position={[0, 0, 0]} /> */}
     </>
   );
 };
@@ -132,28 +122,13 @@ const HTMLElements = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const currentPage = useMemo(
-    () => searchParams.get("page") ?? "main",
-    [searchParams]
-  );
+  const currentPage = useMemo(() => searchParams.get("page") ?? "main", [searchParams]);
 
   return (
     <div className="fixed top-0 left-0 z-50 flex items-start w-full h-full gap-3 px-8 pointer-events-none py-9">
-      <button
-        className={`pointer-events-auto ${
-          currentPage !== "main" ? "opacity-100 delay-300" : "opacity-0"
-        } transition-opacity duration-500`}
-        onClick={() => navigate("/main")}
-        disabled={currentPage === "main"}
-      >
+      <button className={`pointer-events-auto ${currentPage !== "main" ? "opacity-100 delay-300" : "opacity-0"} transition-opacity duration-500`} onClick={() => navigate("/main")} disabled={currentPage === "main"}>
         {/* Back Icon */}
-        <svg
-          width="48"
-          height="48"
-          viewBox="0 0 48 48"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M36 26.7279C37.1046 26.7279 38 25.8325 38 24.7279C38 23.6234 37.1046 22.7279 36 22.7279V26.7279ZM10.5858 23.3137C9.80474 24.0948 9.80474 25.3611 10.5858 26.1421L19.3137 34.8701C20.0948 35.6511 21.3611 35.6511 22.1421 34.8701C22.9232 34.0889 22.9232 32.8227 22.1421 32.0417L14.8284 24.7279L22.1421 17.4142C22.9232 16.6332 22.9232 15.3668 22.1421 14.5858C21.3611 13.8047 20.0948 13.8047 19.3137 14.5858L10.5858 23.3137ZM36 22.7279H12V26.7279H36V22.7279Z"
             fill="#8C5B5B"
@@ -161,49 +136,29 @@ const HTMLElements = () => {
         </svg>
       </button>
 
-      {/* Info */}
-      <section
-        className={`${
-          currentPage === "info"
-            ? "opacity-100 delay-300 pointer-events-auto"
-            : "opacity-0  pointer-events-none"
-        } transition-opacity duration-500`}
-      >
-        <h1 className="mb-4 font-playfair text-white text-[28px] font-bold tracing-[0.33px] mt-1">
-          Sesame salt’s 1st open house party
-        </h1>
-        <p className="mb-3 text-base font-normal tracking-widest font-lato">
-          We’re hosting a standing party with a showcase of our inspirational
-          works, vast variety of beverages and light snacks. <br /> Dress Code :
-          Gatsby Chic <br />
-        </p>
-        <p className="text-base font-normal tracking-widest font-lato">
-          October 30th, 2023 from 20:00 <br />
-          @Moonriver Classic Bar (10-4, Dosan-daero 45-gil, Gangnam-gu, Seoul)
-        </p>
-      </section>
+      <div>
+        {/* Info */}
+        <section className={`${currentPage === "info" ? "opacity-100 delay-300 pointer-events-auto" : "opacity-0  pointer-events-none h-0"} transition-opacity duration-500`}>
+          <h1 className="mb-4 font-playfair text-white text-[28px] font-bold tracing-[0.33px] mt-1">Sesame salt’s 1st open house party</h1>
+          <p className="mb-3 text-base font-normal tracking-widest font-lato">
+            We’re hosting a standing party with a showcase of our inspirational works, vast variety of beverages and light snacks. <br /> Dress Code : Gatsby Chic <br />
+          </p>
+          <p className="text-base font-normal tracking-widest font-lato">
+            October 30th, 2023 from 20:00 <br />
+            @Moonriver Classic Bar (10-4, Dosan-daero 45-gil, Gangnam-gu, Seoul)
+          </p>
+        </section>
 
-      {/* About us */}
-      <section
-        className={`${
-          currentPage === "about"
-            ? "pointer-events-auto opacity-100 delay-300"
-            : "opacity-0 pointer-events-none"
-        } transition-opacity duration-500`}
-      >
-        <h1 className="mb-4 font-playfair text-white text-[28px] font-bold tracing-[0.33px] mt-1">
-          Sesame salt’s 1st open house party
-        </h1>
-        <p className="mb-3 text-base font-normal tracking-widest font-lato">
-          We’re hosting a standing party with a showcase of our inspirational
-          works, vast variety of beverages and light snacks. <br /> Dress Code :
-          Gatsby Chic <br />
-        </p>
-        <p className="text-base font-normal tracking-widest font-lato">
-          October 30th, 2023 from 20:00 <br />
-          @Moonriver Classic Bar (10-4, Dosan-daero 45-gil, Gangnam-gu, Seoul)
-        </p>
-      </section>
+        {/* About us */}
+        <section className={`${currentPage === "about" ? "pointer-events-auto opacity-100 delay-300" : "opacity-0 pointer-events-none h-0"} transition-opacity duration-500`}>
+          <h1 className="mb-4 font-playfair text-white text-[28px] font-bold tracing-[0.33px] mt-1">We are definitely worth our salt</h1>
+          <p className="mb-3 text-base font-normal tracking-widest font-lato">
+            Creative and fun. That’s our motto.
+            <br />
+            We aim to go beyond the norm and pursue making creative & user-oriented products.
+          </p>
+        </section>
+      </div>
     </div>
   );
 };
