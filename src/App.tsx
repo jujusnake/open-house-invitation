@@ -4,6 +4,8 @@ import FlipCard from "./components/common/FlipCard";
 import ThreeCanvas from "./components/ThreeCanvas";
 
 const App = ({ mode }: { mode: "splash" | "content" }) => {
+  const [loading, setLoading] = useState<number>(0);
+
   return (
     <div className="text-ohi-text-contrast text-3xl h-[100dvh] w-full min-w-[556px] min-h-[520px] overflow-hidden">
       <div
@@ -12,8 +14,13 @@ const App = ({ mode }: { mode: "splash" | "content" }) => {
         }  transition-transform duration-[1.9s] ease-out`}
       >
         <FlipCard
-          frontElem={<Splash />}
-          backElem={<ThreeCanvas mode={mode} />}
+          frontElem={<Splash progress={loading} />}
+          backElem={
+            <ThreeCanvas
+              mode={mode}
+              onProgress={(progress: number) => setLoading(progress)}
+            />
+          }
           isBack={mode === "content"}
         />
       </div>

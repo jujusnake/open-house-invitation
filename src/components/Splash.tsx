@@ -3,9 +3,9 @@ import Picture from "./common/Picture";
 import Loader from "./common/Loader";
 import { useNavigate } from "react-router-dom";
 
-type Props = {};
+type Props = { progress: number };
 
-const Splash = (props: Props) => {
+const Splash = ({ progress }: Props) => {
   const [loading, setLoading] = useState<number>(0);
   const navigate = useNavigate();
 
@@ -48,7 +48,7 @@ const Splash = (props: Props) => {
         </h1>
         <div className="h-[200px]" style={{ height: LoaderSize }}>
           <Loader
-            progress={loading}
+            progress={progress}
             onEnter={proceedToMain}
             size={LoaderSize}
           />

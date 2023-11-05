@@ -1,15 +1,5 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
-import {
-  Bounds,
-  Float,
-  Image,
-  Mask,
-  MeshPortalMaterial,
-  PortalMaterialType,
-  useGLTF,
-  useHelper,
-  useMask,
-} from "@react-three/drei";
+import React, { useEffect, useMemo, useRef } from "react";
+import { Float, Mask, useGLTF, useMask } from "@react-three/drei";
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
 import { TextureLoader } from "three";
 import * as THREE from "three";
@@ -92,6 +82,7 @@ const PortalBox = () => {
   const { scene: champagne } = useGLTF("/models/champagne.glb");
   const image = useLoader(TextureLoader, "/images/frame/main.jpg");
 
+  const champagneRef = useRef<any | null>(null);
   const spotRef = useRef<THREE.SpotLight>(new THREE.SpotLight());
 
   useEffect(() => {
@@ -102,11 +93,28 @@ const PortalBox = () => {
     }
   }, []);
 
+  useEffect(() => {
+    if (champagneRef.current && stencil) {
+      champagneRef.current.children[0].children.forEach((child: any) => {
+        if (child instanceof THREE.Mesh) {
+          if (child.material instanceof THREE.Material) {
+            child.material.stencilWrite = stencil.stencilWrite;
+            child.material.stencilRef = stencil.stencilRef;
+            child.material.stencilFunc = stencil.stencilFunc;
+            child.material.stencilFail = stencil.stencilFail;
+            child.material.stencilZFail = stencil.stencilZFail;
+            child.material.stencilZPass = stencil.stencilZPass;
+          }
+        }
+      });
+    }
+  }, [stencil]);
+
   return (
     <>
       <Mask id={100} position={[0, 6.5, -24]}>
         <planeGeometry args={[8, 6, 1, 1]} />
-        <meshBasicMaterial color="#fff" />
+        {/* <meshBasicMaterial color="#fff" /> */}
       </Mask>
 
       <mesh castShadow receiveShadow dispose={null} position={[0, 0, -30.1]}>
@@ -115,25 +123,14 @@ const PortalBox = () => {
       </mesh>
       <Float floatIntensity={2} rotationIntensity={0} speed={7}>
         <mesh position={[-2, 5, -27]} rotation={[-0.3, 0, -0.3]} scale={10}>
-          <primitive object={champagne} />
+          <primitive object={champagne} {...stencil} ref={champagneRef} />
         </mesh>
       </Float>
-      <Float
-        floatIntensity={0.5}
-        rotationIntensity={0.01}
-        speed={7}
-        {...stencil}
-      >
+      <Float floatIntensity={0.5} rotationIntensity={0.01} speed={7}>
         <mesh position={[0, 6, -30]}>
           <planeGeometry args={[7 * 1.5, 7]} />
           <meshBasicMaterial map={image} transparent {...stencil} />
         </mesh>
-
-        {/* <Image
-          url="/images/frame/main.jpg"
-          position={[0, 6, -30]}
-          scale={[7.5, 5]}
-        /> */}
       </Float>
       <spotLight
         position={[0, 12, -26]}
