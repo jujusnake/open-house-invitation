@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
-import { Float, Mask, useGLTF, useMask } from "@react-three/drei";
+import React, { useEffect, useMemo, useRef } from "react";
+import { Float, Mask, useGLTF, useHelper, useMask } from "@react-three/drei";
 import * as THREE from "three";
 import { useFrame, useLoader, useThree } from "@react-three/fiber";
 
@@ -21,7 +21,6 @@ const MyAboutUs = ({ selected, onSelect }: Props) => {
   }, []);
 
   useFrame((state, delta) => {
-    // console.log(frameRef.current);
     if (frameRef.current) {
       const mesh = frameRef.current.children[0].children[0] as THREE.Mesh;
       const material = mesh.material as THREE.MeshStandardMaterial;
@@ -44,12 +43,15 @@ const MyAboutUs = ({ selected, onSelect }: Props) => {
           onClick={(e) => {
             e.stopPropagation();
             onSelect && onSelect();
+            document.documentElement.style.setProperty("cursor", "default");
           }}
+          onPointerOver={() => selected === false && document.documentElement.style.setProperty("cursor", "pointer")}
+          onPointerLeave={() => document.documentElement.style.setProperty("cursor", "default")}
           ref={frameRef}
         >
           <primitive object={scene} />
         </mesh>
-        <PortalBox />
+        <PortalBox selected={selected} />
       </Float>
     </>
   );
@@ -57,41 +59,50 @@ const MyAboutUs = ({ selected, onSelect }: Props) => {
 
 export default MyAboutUs;
 
-const PortalBox = () => {
+const PortalBox = ({ selected }: { selected: boolean }) => {
+  const { scene } = useThree();
   const stencil = useMask(200, false);
   const image = useLoader(THREE.TextureLoader, ["/images/frame/sk.jpg", "/images/frame/se.jpg", "/images/frame/hg.jpg", "/images/frame/nj.jpg"]);
+  const boxSize = useMemo(() => 7, []);
+  const spotRef = useRef<THREE.SpotLight>(new THREE.SpotLight());
+
+  useEffect(() => {
+    const target = spotRef.current.target;
+    target.position.set(-12.8, 4.6, -19);
+    scene.add(target);
+  }, [scene]);
 
   return (
     <>
       <Mask id={200} position={[-10, 5, -15]} rotation={new THREE.Euler(-0.3, 0.5, 0.1)}>
-        {/* <mesh position={[-10, 5, -15]} rotation={new THREE.Euler(-0.3, 0.5, 0.1)}> */}
         <planeGeometry args={[4.8, 5.8, 1, 1]} />
         <meshBasicMaterial color="#fff" />
-        {/* </mesh> */}
       </Mask>
 
-      <group position={[-12, -4.6, -18]} rotation={new THREE.Euler(-0.3, 0.5, 0.1)}>
-        <mesh castShadow receiveShadow dispose={null} position={[0, 10, 0]}>
-          <planeGeometry args={[10, 10, 1, 1]} />
+      <group position={[-12.2, -2.6, -18]} rotation={new THREE.Euler(-0.3, 0.5, 0.1)}>
+        <mesh castShadow receiveShadow dispose={null} position={[0, boxSize, 0]}>
+          <planeGeometry args={[boxSize, boxSize, 1, 1]} />
           <meshPhongMaterial color="#3A2D26" {...stencil} />
         </mesh>
-        <mesh castShadow receiveShadow dispose={null} position={[0, 10 / 2, 10 / 2]} rotation={[-Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[10, 10, 1, 1]} />
+        <mesh castShadow receiveShadow dispose={null} position={[0, boxSize / 2, boxSize / 2]} rotation={[-Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[boxSize, boxSize, 1, 1]} />
           <meshPhongMaterial color="#3A2D26" {...stencil} />
         </mesh>
-        <mesh castShadow receiveShadow dispose={null} position={[0, 10 + 10 / 2, 10 / 2]} rotation={[Math.PI / 2, 0, 0]}>
-          <planeGeometry args={[10, 10, 1, 1]} />
+        <mesh castShadow receiveShadow dispose={null} position={[0, boxSize + boxSize / 2, boxSize / 2]} rotation={[Math.PI / 2, 0, 0]}>
+          <planeGeometry args={[boxSize, boxSize, 1, 1]} />
           <meshPhongMaterial color="#3A2D26" {...stencil} />
         </mesh>
-        <mesh castShadow receiveShadow dispose={null} position={[-10 / 2, 10, 10 / 2]} rotation={[Math.PI / 2, Math.PI / 2, 0]}>
-          <planeGeometry args={[10, 10, 1, 1]} />
+        <mesh castShadow receiveShadow dispose={null} position={[-boxSize / 2, boxSize, boxSize / 2]} rotation={[Math.PI / 2, Math.PI / 2, 0]}>
+          <planeGeometry args={[boxSize, boxSize, 1, 1]} />
           <meshPhongMaterial color="#3A2D26" {...stencil} />
         </mesh>
-        <mesh castShadow receiveShadow dispose={null} position={[10 / 2, 10, 10 / 2]} rotation={[Math.PI / 2, -Math.PI / 2, 0]}>
-          <planeGeometry args={[10, 10, 1, 1]} />
+        <mesh castShadow receiveShadow dispose={null} position={[boxSize / 2, boxSize, boxSize / 2]} rotation={[Math.PI / 2, -Math.PI / 2, 0]}>
+          <planeGeometry args={[boxSize, boxSize, 1, 1]} />
           <meshPhongMaterial color="#3A2D26" {...stencil} />
         </mesh>
       </group>
+
+      <spotLight position={[-11, 7, -16]} ref={spotRef} intensity={selected ? 300 : 0} color={"#ffffff"} angle={Math.PI / 4} distance={30} penumbra={0.1} castShadow />
 
       <Float floatIntensity={0.5} rotationIntensity={0.01} speed={7}>
         <group position={[-12.5, 4, -19]} rotation={new THREE.Euler(-0.3, 0.5, 0.1)}>

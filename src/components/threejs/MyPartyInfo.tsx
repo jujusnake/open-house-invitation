@@ -39,7 +39,17 @@ const MyPartyInfo = ({ selected, onSelect }: Props) => {
 
   return (
     <>
-      <mesh scale={15} position={[0, 6.5, -25]} ref={modelRef} onClick={() => selected === false && onSelect()}>
+      <mesh
+        scale={15}
+        position={[0, 6.5, -25]}
+        ref={modelRef}
+        onClick={() => {
+          selected === false && onSelect();
+          document.documentElement.style.setProperty("cursor", "default");
+        }}
+        onPointerOver={() => selected === false && document.documentElement.style.setProperty("cursor", "pointer")}
+        onPointerLeave={() => document.documentElement.style.setProperty("cursor", "default")}
+      >
         <primitive object={scene} />
       </mesh>
       <mesh
@@ -48,7 +58,10 @@ const MyPartyInfo = ({ selected, onSelect }: Props) => {
         onClick={(e) => {
           e.stopPropagation();
           selected === false && onSelect();
+          document.documentElement.style.setProperty("cursor", "default");
         }}
+        onPointerOver={() => selected === false && document.documentElement.style.setProperty("cursor", "pointer")}
+        onPointerLeave={() => document.documentElement.style.setProperty("cursor", "default")}
       >
         <planeGeometry args={[imageSize * 1.5, imageSize]} />
         <meshBasicMaterial map={image} transparent />

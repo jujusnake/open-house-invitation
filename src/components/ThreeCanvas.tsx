@@ -9,6 +9,7 @@ import MyPlane from "./threejs/MyPlane";
 import MyPartyInfo from "./threejs/MyPartyInfo";
 import MyAboutUs from "./threejs/MyAboutUs";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import MyRSVP from "./threejs/MyRSVP";
 
 type Props = {
   mode: "splash" | "content";
@@ -69,6 +70,13 @@ const CanvasChildren = ({ onProgress }: { onProgress?: (progress: number) => voi
         onSelect={() => {
           setCurrentViewTarget("about");
           navigate("?page=about");
+        }}
+      />
+      <MyRSVP
+        selected={currentViewTarget === "rsvp"}
+        onSelect={() => {
+          setCurrentViewTarget("rsvp");
+          navigate("?page=rsvp");
         }}
       />
       <Helpers />
