@@ -76,7 +76,7 @@ export default MyPartyInfo;
 
 const PortalBox = ({ selected }: { selected: boolean }) => {
   const { scene } = useThree();
-  const stencil = useMask(100, false);
+  const stencil = useMask(400, false);
   const { scene: champagne } = useGLTF("/models/champagne.glb");
   const image = useLoader(TextureLoader, ["/images/frame/main.jpg", "/images/frame/main2.jpg", "/images/frame/main3.jpg"]);
   const [imageIdx, setImageIdx] = useState<number>(0);
@@ -127,7 +127,7 @@ const PortalBox = ({ selected }: { selected: boolean }) => {
 
   return (
     <>
-      <Mask id={100} position={[0, 6.5, -24]}>
+      <Mask id={400} position={[0, 6.5, -24]}>
         <planeGeometry args={[8, 6, 1, 1]} />
         {/* <meshBasicMaterial color="#fff" /> */}
       </Mask>

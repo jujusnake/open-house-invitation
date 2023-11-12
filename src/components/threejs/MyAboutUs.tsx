@@ -60,17 +60,9 @@ const MyAboutUs = ({ selected, onSelect }: Props) => {
 export default MyAboutUs;
 
 const PortalBox = ({ selected }: { selected: boolean }) => {
-  const { scene } = useThree();
   const stencil = useMask(200, false);
   const image = useLoader(THREE.TextureLoader, ["/images/frame/sk.jpg", "/images/frame/se.jpg", "/images/frame/hg.jpg", "/images/frame/nj.jpg"]);
   const boxSize = useMemo(() => 7, []);
-  const spotRef = useRef<THREE.SpotLight>(new THREE.SpotLight());
-
-  useEffect(() => {
-    const target = spotRef.current.target;
-    target.position.set(-12.8, 4.6, -19);
-    scene.add(target);
-  }, [scene]);
 
   return (
     <>
@@ -101,8 +93,6 @@ const PortalBox = ({ selected }: { selected: boolean }) => {
           <meshPhongMaterial color="#3A2D26" {...stencil} />
         </mesh>
       </group>
-
-      <spotLight position={[-11, 7, -16]} ref={spotRef} intensity={selected ? 300 : 0} color={"#ffffff"} angle={Math.PI / 4} distance={30} penumbra={0.1} castShadow />
 
       <Float floatIntensity={0.5} rotationIntensity={0.01} speed={7}>
         <group position={[-12.5, 4, -19]} rotation={new THREE.Euler(-0.3, 0.5, 0.1)}>

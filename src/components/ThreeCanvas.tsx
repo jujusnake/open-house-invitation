@@ -55,7 +55,7 @@ const CanvasChildren = ({ onProgress }: { onProgress?: (progress: number) => voi
       <MyPlane />
       <MyWall />
       <MyDirecLight />
-      <MyCamera target={currentViewTarget} />
+      {/* <MyCamera target={currentViewTarget} /> */}
 
       {/* Frames */}
       <MyPartyInfo
@@ -121,7 +121,7 @@ const Helpers = () => {
         lookAt={() => new THREE.Vector3(0, 0, 0)}
         castShadow
       /> */}
-      {/* <OrbitControls zoosmSpeed={10} position={[0, 0, 0]} /> */}
+      <OrbitControls zoomSpeed={10} position={[0, 0, 0]} />
     </>
   );
 };
