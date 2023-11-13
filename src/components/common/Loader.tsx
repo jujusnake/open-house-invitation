@@ -6,8 +6,6 @@ type Props = { progress?: number; onEnter?: () => void; size?: number };
 const Loader = ({ onEnter, size = 200 }: Props) => {
   const { progress } = useProgress();
 
-  console.log(progress);
-
   const handleEnter = () => {
     onEnter && onEnter();
   };
