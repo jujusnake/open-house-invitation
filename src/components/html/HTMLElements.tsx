@@ -214,7 +214,7 @@ const HTMLElements = () => {
             currentPage === "main"
               ? "opacity-100 delay-300 pointer-events-auto"
               : "opacity-0  pointer-events-none"
-          } transition-opacity duration-500 absolute top-0 left-0`}
+          } transition-opacity duration-500 absolute top-0 left-0 select-none`}
         >
           <h1 className="mb-4 font-playfair text-white text-[28px] font-bold tracing-[0.33px] mt-1">
             Welcome, saltiers
@@ -238,7 +238,7 @@ const HTMLElements = () => {
               : "opacity-0  pointer-events-none"
           } transition-opacity duration-500 absolute top-0 left-0`}
         >
-          <h1 className="mb-4 font-playfair text-white text-[28px] font-bold tracing-[0.33px] mt-1">
+          <h1 className="mb-4 font-playfair text-white text-[28px] font-bold tracing-[0.33px] mt-1 select-none">
             Sesame salt’s 1st open house party
           </h1>
           <p className="mb-3 text-base font-normal tracking-widest font-lato">
@@ -258,7 +258,7 @@ const HTMLElements = () => {
             currentPage === "about"
               ? "opacity-100 delay-300 pointer-events-auto"
               : "opacity-0  pointer-events-none"
-          } transition-opacity duration-500 absolute top-0 left-0`}
+          } transition-opacity duration-500 absolute top-0 left-0 select-none`}
         >
           <h1 className="mb-4 font-playfair text-white text-[28px] font-bold tracing-[0.33px] mt-1">
             We are definitely worth our salt
@@ -277,7 +277,7 @@ const HTMLElements = () => {
             currentPage === "rsvp"
               ? "opacity-100 delay-300 pointer-events-none"
               : "opacity-0  pointer-events-none"
-          } transition-opacity duration-500 absolute top-0 left-0`}
+          } transition-opacity duration-500 absolute top-0 left-0 select-none`}
         >
           <h1 className="mb-4 font-playfair text-white text-[28px] font-bold tracing-[0.33px] mt-1">
             RSVP & Inquiries
