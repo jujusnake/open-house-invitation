@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 import {
@@ -23,17 +23,16 @@ import MyLabels from "./threejs/MyLabels";
 
 type Props = {
   mode: "splash" | "content";
-  onProgress?: (progress: number) => void;
 };
 
-const ThreeCanvas = ({ mode, onProgress }: Props) => {
+const ThreeCanvas = ({ mode }: Props) => {
   return (
     <div className="w-full h-full bg-[#372e28]">
       <Canvas
         style={{ width: "100%", height: "100%" }}
         resize={{ offsetSize: true }}
       >
-        <CanvasChildren onProgress={onProgress} />
+        <CanvasChildren />
       </Canvas>
       <HTMLElements />
     </div>
@@ -42,17 +41,7 @@ const ThreeCanvas = ({ mode, onProgress }: Props) => {
 
 export default ThreeCanvas;
 
-const CanvasChildren = ({
-  onProgress,
-}: {
-  onProgress?: (progress: number) => void;
-}) => {
-  const { progress } = useProgress();
-
-  useEffect(() => {
-    onProgress && onProgress(progress);
-  }, [progress, onProgress]);
-
+const CanvasChildren = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
@@ -70,7 +59,7 @@ const CanvasChildren = ({
   }, [searchParams]);
 
   return (
-    <>
+    <Suspense fallback={null}>
       <MyPlane />
       <MyWall />
       <MyDirecLight />
@@ -102,49 +91,6 @@ const CanvasChildren = ({
           navigate("?page=rsvp");
         }}
       />
-      {/* <Helpers /> */}
-    </>
-  );
-};
-
-const Helpers = () => {
-  return (
-    <>
-      {/* <mesh
-        position={[0, 0.5, 0]}
-        // rotation={[-Math.PI / 2, 0, 0]}
-        receiveShadow={true}
-        castShadow
-      >
-        <boxGeometry args={[1, 1, 1, 1]} />
-        <meshStandardMaterial color={new THREE.Color("#f6b1b1")} />
-      </mesh>
-      <mesh
-        position={[-3, 0.5, 0]}
-        // rotation={[-Math.PI / 2, 0, 0]}
-        receiveShadow={true}
-        castShadow
-      >
-        <boxGeometry args={[1, 1, 1, 1]} />
-        <meshStandardMaterial color={new THREE.Color("#f6b1b1")} />
-      </mesh>
-      <mesh
-        position={[3, 0.5, 0]}
-        // rotation={[-Math.PI / 2, 0, 0]}
-        receiveShadow={true}
-        castShadow
-      >
-        <boxGeometry args={[1, 1, 1, 1]} />
-        <meshStandardMaterial color={new THREE.Color("#f6b1b1")} />
-      </mesh>
-      <spotLight
-        color={new THREE.Color("#198449")}
-        position={[0, 2, 0]}
-        intensity={100}
-        lookAt={() => new THREE.Vector3(0, 0, 0)}
-        castShadow
-      /> */}
-      {/* <OrbitControls zoomSpeed={10} position={[0, 0, 0]} /> */}
-    </>
+    </Suspense>
   );
 };

@@ -1,14 +1,12 @@
+import { useProgress } from "@react-three/drei";
 import React, { useMemo } from "react";
 
 type Props = { progress?: number; onEnter?: () => void; size?: number };
 
-const Loader = ({ progress = 0, onEnter, size = 200 }: Props) => {
-  const strokeDashArray = useMemo(() => 2 * Math.PI * 34.5, []);
+const Loader = ({ onEnter, size = 200 }: Props) => {
+  const { progress } = useProgress();
 
-  const strokeDashOffset = useMemo(
-    () => strokeDashArray * ((100 - progress) / 100),
-    [progress, strokeDashArray]
-  );
+  console.log(progress);
 
   const handleEnter = () => {
     onEnter && onEnter();
@@ -34,8 +32,8 @@ const Loader = ({ progress = 0, onEnter, size = 200 }: Props) => {
           r="34.5"
           stroke="#8C5B5B"
           strokeWidth={5}
-          strokeDasharray={strokeDashArray}
-          strokeDashoffset={strokeDashOffset}
+          strokeDasharray={2 * Math.PI * 34.5}
+          strokeDashoffset={2 * Math.PI * 34.5 * ((100 - progress) / 100)}
           className="transition-all ease-linear"
         />
       </svg>

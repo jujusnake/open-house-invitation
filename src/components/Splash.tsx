@@ -3,32 +3,12 @@ import Picture from "./common/Picture";
 import Loader from "./common/Loader";
 import { useNavigate } from "react-router-dom";
 
-type Props = { progress: number };
-
-const Splash = ({ progress }: Props) => {
-  const [loading, setLoading] = useState<number>(0);
+const Splash = () => {
   const navigate = useNavigate();
 
   const proceedToMain = () => {
     navigate("/main");
   };
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setLoading((prev) => {
-        if (prev + 10 >= 100) {
-          clearInterval(interval);
-          return 100;
-        } else {
-          return prev + 10;
-        }
-      });
-    }, 300);
-
-    return () => {
-      clearInterval(interval);
-    };
-  }, []);
 
   const LoaderSize = useMemo(() => 220, []);
 
@@ -47,11 +27,7 @@ const Splash = ({ progress }: Props) => {
           You’re Invited
         </h1>
         <div className="h-[200px]" style={{ height: LoaderSize }}>
-          <Loader
-            progress={progress}
-            onEnter={proceedToMain}
-            size={LoaderSize}
-          />
+          <Loader onEnter={proceedToMain} size={LoaderSize} />
         </div>
         <aside
           className="flex items-end uppercase text-ohi-text-normal text-center text-xl lg:text-2xl tracking-[0.2px]"
