@@ -11,6 +11,7 @@ import MyAboutUs from "./threejs/MyAboutUs";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import MyRSVP from "./threejs/MyRSVP";
 import HTMLElements from "./html/HTMLElements";
+import MyTable from "./threejs/MyTable";
 
 type Props = {
   mode: "splash" | "content";
@@ -57,6 +58,9 @@ const CanvasChildren = ({ onProgress }: { onProgress?: (progress: number) => voi
       <MyWall />
       <MyDirecLight />
       <MyCamera target={currentViewTarget} />
+
+      {/* Objects */}
+      <MyTable />
 
       {/* Frames */}
       <MyPartyInfo

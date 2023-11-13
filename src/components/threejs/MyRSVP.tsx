@@ -36,7 +36,7 @@ const MyRSVP = ({ selected, onSelect }: Props) => {
 
   return (
     <>
-      <Float floatIntensity={selected ? 0 : 2} rotationIntensity={selected ? 0 : 0.1} speed={3}>
+      <Float floatIntensity={selected ? 0 : 2} rotationIntensity={selected ? 0 : 0.1} speed={3} position={[2, 0, 0]}>
         <mesh
           scale={12}
           position={[6, 4, -17]}

@@ -28,7 +28,7 @@ module.exports = {
         },
       },
       animation: {
-        fadein: "fadein 0.5s linear 0.75s forwards",
+        fadein: "fadein 0.5s linear 0.6s forwards",
       },
     },
   },

@@ -21,7 +21,7 @@ const MyCamera = ({ target = "main" }: Props) => {
       case "about":
         return [-12, 4.4, -18.5];
       case "rsvp":
-        return [6.1, 4, -18];
+        return [8.1, 4, -18];
       default:
         return [0, 4.5, 0];
     }
@@ -36,7 +36,7 @@ const MyCamera = ({ target = "main" }: Props) => {
       case "about":
         return [-9.3677, 5.677, -13.16081797];
       case "rsvp":
-        return [4.7, 4.7, -16.2];
+        return [6.7, 4.7, -16.2];
       default:
         return [0, 7, 17];
     }
