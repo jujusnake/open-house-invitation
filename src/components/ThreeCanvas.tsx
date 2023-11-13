@@ -1,7 +1,14 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { Canvas, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { CameraControls, FlyControls, KeyboardControlsEntry, OrbitControls, PerspectiveCamera, useProgress } from "@react-three/drei";
+import {
+  CameraControls,
+  FlyControls,
+  KeyboardControlsEntry,
+  OrbitControls,
+  PerspectiveCamera,
+  useProgress,
+} from "@react-three/drei";
 import MyCamera from "./threejs/MyCamera";
 import MyDirecLight from "./threejs/MyDirecLight";
 import MyWall from "./threejs/MyWall";
@@ -22,7 +29,10 @@ type Props = {
 const ThreeCanvas = ({ mode, onProgress }: Props) => {
   return (
     <div className="w-full h-full bg-[#372e28]">
-      <Canvas style={{ width: "100%", height: "100%" }} resize={{ offsetSize: true }}>
+      <Canvas
+        style={{ width: "100%", height: "100%" }}
+        resize={{ offsetSize: true }}
+      >
         <CanvasChildren onProgress={onProgress} />
       </Canvas>
       <HTMLElements />
@@ -32,7 +42,11 @@ const ThreeCanvas = ({ mode, onProgress }: Props) => {
 
 export default ThreeCanvas;
 
-const CanvasChildren = ({ onProgress }: { onProgress?: (progress: number) => void }) => {
+const CanvasChildren = ({
+  onProgress,
+}: {
+  onProgress?: (progress: number) => void;
+}) => {
   const { progress } = useProgress();
 
   useEffect(() => {
@@ -42,7 +56,9 @@ const CanvasChildren = ({ onProgress }: { onProgress?: (progress: number) => voi
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const [currentViewTarget, setCurrentViewTarget] = useState<"main" | "info" | "about" | "rsvp">("main");
+  const [currentViewTarget, setCurrentViewTarget] = useState<
+    "main" | "info" | "about" | "rsvp"
+  >("main");
 
   useEffect(() => {
     const page = searchParams.get("page");
@@ -86,7 +102,7 @@ const CanvasChildren = ({ onProgress }: { onProgress?: (progress: number) => voi
           navigate("?page=rsvp");
         }}
       />
-      <Helpers />
+      {/* <Helpers /> */}
     </>
   );
 };
