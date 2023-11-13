@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
@@ -22,7 +22,7 @@ const MyCamera = ({ target = "main" }: Props) => {
       case "about":
         return [-12, 4.4, -18.5];
       case "rsvp":
-        return [8.1, 4, -18];
+        return [12.2, 2.5, -24];
       default:
         return [0, 4.5, 0];
     }
@@ -37,11 +37,19 @@ const MyCamera = ({ target = "main" }: Props) => {
       case "about":
         return [-9.3677, 5.677, -13.16081797];
       case "rsvp":
-        return [6.7, 4.7, -16.2];
+        return [7.2, 4.7, -16.2];
       default:
         return [0, 7, 17];
     }
   }, [target]);
+
+  const cameraFollowMouse = useCallback((e: MouseEvent) => {
+    const x = (e.clientX - window.innerWidth / 2) / window.innerWidth;
+    const y = (e.clientY - window.innerHeight / 2) / window.innerHeight;
+    setMousePos([x, y]);
+  }, []);
+
+  const throttleFn = _.throttle(cameraFollowMouse, 150);
 
   useEffect(() => {
     window.addEventListener("mousemove", throttleFn);
@@ -61,14 +69,6 @@ const MyCamera = ({ target = "main" }: Props) => {
     prevLookatRef.current = [newLookatX, newLookatY, newLookatZ];
     camera.lookAt(newLookatX, newLookatY, newLookatZ);
   });
-
-  const cameraFollowMouse = (e: MouseEvent) => {
-    const x = (e.clientX - window.innerWidth / 2) / window.innerWidth;
-    const y = (e.clientY - window.innerHeight / 2) / window.innerHeight;
-    setMousePos([x, y]);
-  };
-
-  const throttleFn = _.throttle(cameraFollowMouse, 150);
 
   return (
     // <PerspectiveCamera makeDefault position={[0, 7, 17]} far={100} ref={ref} />

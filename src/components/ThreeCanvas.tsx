@@ -12,6 +12,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import MyRSVP from "./threejs/MyRSVP";
 import HTMLElements from "./html/HTMLElements";
 import MyTable from "./threejs/MyTable";
+import MyLabels from "./threejs/MyLabels";
 
 type Props = {
   mode: "splash" | "content";
@@ -59,8 +60,9 @@ const CanvasChildren = ({ onProgress }: { onProgress?: (progress: number) => voi
       <MyDirecLight />
       <MyCamera target={currentViewTarget} />
 
-      {/* Objects */}
+      {/* Objects & Labels */}
       <MyTable />
+      <MyLabels visible={currentViewTarget === "main"} />
 
       {/* Frames */}
       <MyPartyInfo
