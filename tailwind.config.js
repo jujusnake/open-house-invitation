@@ -21,6 +21,15 @@ module.exports = {
         playfairsc: ["'Playfair Display SC'", ...defaultTheme.fontFamily.serif],
         lato: ["'Lato'", ...defaultTheme.fontFamily.sans],
       },
+      keyframes: {
+        fadein: {
+          "0%": { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+      },
+      animation: {
+        fadein: "fadein 0.5s linear 0.75s forwards",
+      },
     },
   },
   plugins: [],
