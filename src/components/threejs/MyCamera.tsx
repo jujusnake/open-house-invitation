@@ -2,13 +2,14 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import * as THREE from "three";
 import { PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import _ from "lodash";
 
 type Props = { target?: "main" | "info" | "about" | "rsvp" };
 
 const MyCamera = ({ target = "main" }: Props) => {
   const ref = useRef<THREE.PerspectiveCamera | null>(null);
 
-  const [currentLookat, setCurrentLookat] = useState<number[]>([0, 4.5, 0]);
+  // const [currentLookat, setCurrentLookat] = useState<number[]>([0, 4.5, 0]);
   const [mousePos, setMousePos] = useState<[number, number]>([0, 0]);
   const prevLookatRef = useRef<number[]>([0, 4.5, -10]);
 
@@ -30,7 +31,7 @@ const MyCamera = ({ target = "main" }: Props) => {
   const CAMERA_POSITION = useMemo(() => {
     switch (target) {
       case "main":
-        return [0, 7, 17];
+        return [0, 7, 12];
       case "info":
         return [0, 6.5, -19];
       case "about":
@@ -43,8 +44,8 @@ const MyCamera = ({ target = "main" }: Props) => {
   }, [target]);
 
   useEffect(() => {
-    window.addEventListener("mousemove", cameraFollowMouse);
-    return () => window.removeEventListener("mousemove", cameraFollowMouse);
+    window.addEventListener("mousemove", throttleFn);
+    return () => window.removeEventListener("mousemove", throttleFn);
   }, []);
 
   useFrame(({ camera }, delta) => {
@@ -66,6 +67,8 @@ const MyCamera = ({ target = "main" }: Props) => {
     const y = (e.clientY - window.innerHeight / 2) / window.innerHeight;
     setMousePos([x, y]);
   };
+
+  const throttleFn = _.throttle(cameraFollowMouse, 150);
 
   return (
     // <PerspectiveCamera makeDefault position={[0, 7, 17]} far={100} ref={ref} />
