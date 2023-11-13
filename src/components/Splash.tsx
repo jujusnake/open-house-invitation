@@ -1,15 +1,8 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import Picture from "./common/Picture";
 import Loader from "./common/Loader";
-import { useNavigate } from "react-router-dom";
 
 const Splash = () => {
-  const navigate = useNavigate();
-
-  const proceedToMain = () => {
-    navigate("/main");
-  };
-
   const LoaderSize = useMemo(() => 220, []);
 
   return (
@@ -27,7 +20,7 @@ const Splash = () => {
           You’re Invited
         </h1>
         <div className="h-[200px]" style={{ height: LoaderSize }}>
-          <Loader onEnter={proceedToMain} size={LoaderSize} />
+          <Loader size={LoaderSize} />
         </div>
         <aside
           className="flex items-end uppercase text-ohi-text-normal text-center text-xl lg:text-2xl tracking-[0.2px]"

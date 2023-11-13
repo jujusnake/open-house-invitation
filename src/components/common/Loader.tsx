@@ -1,13 +1,15 @@
+import React from "react";
 import { useProgress } from "@react-three/drei";
-import React, { useMemo } from "react";
+import { useNavigate } from "react-router-dom";
 
-type Props = { progress?: number; onEnter?: () => void; size?: number };
+type Props = { size?: number };
 
-const Loader = ({ onEnter, size = 200 }: Props) => {
+const Loader = ({ size = 200 }: Props) => {
   const { progress } = useProgress();
+  const navigate = useNavigate();
 
   const handleEnter = () => {
-    onEnter && onEnter();
+    navigate("/main");
   };
 
   return (
@@ -32,7 +34,7 @@ const Loader = ({ onEnter, size = 200 }: Props) => {
           strokeWidth={5}
           strokeDasharray={2 * Math.PI * 34.5}
           strokeDashoffset={2 * Math.PI * 34.5 * ((100 - progress) / 100)}
-          className="transition-all ease-linear"
+          className={`transition-all ease-linear`}
         />
       </svg>
 
